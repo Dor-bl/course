@@ -1,0 +1,160 @@
+# מבוא[[introduction]]
+
+<CourseFloatingBanner
+    chapter={1}
+    classNames="absolute z-10 right-0 top-0"
+/>
+
+## ברוכים הבאים לקורס 🤗![[welcome-to-the-course]]
+
+<Youtube id="00GKzGyWFEs" />
+
+קורס זה ילמד אתכם על מודלי שפה גדולים (LLMs) ועיבוד שפה טבעית (NLP) באמצעות ספריות מהאקוסיסטם של [Hugging Face](https://huggingface.co/) — [🤗 Transformers](https://github.com/huggingface/transformers), [🤗 Datasets](https://github.com/huggingface/datasets), [🤗 Tokenizers](https://github.com/huggingface/tokenizers), ו-[🤗 Accelerate](https://github.com/huggingface/accelerate) — וכמו כן [Hugging Face Hub](https://huggingface.co/models).
+
+נכסה גם ספריות מחוץ לאקוסיסטם של Hugging Face. אלו הן תרומות מדהימות לקהילת הבינה המלאכותית וכלים שימושיים מאוד.
+
+הקורס חינם לחלוטין וללא פרסומות.
+
+## הבנת NLP ו-LLMs[[understanding-nlp-and-llms]]
+
+למרות שהקורס התמקד במקור ב-NLP (עיבוד שפה טבעית), הוא התפתח כדי להדגיש מודלי שפה גדולים (LLMs), המייצגים את ההתקדמות האחרונה בתחום.
+
+**מה ההבדל?**
+- **NLP (עיבוד שפה טבעית)** הוא התחום הרחב יותר המתמקד באפשור למחשבים להבין, לפרש ולייצר שפה אנושית. NLP כולל טכניקות ומשימות רבות כמו ניתוח סנטימנט, זיהוי ישויות מוזכרות ותרגום מכונה.
+- **LLMs (מודלי שפה גדולים)** הם תת-קבוצה עוצמתית של מודלי NLP המאופיינים על ידי גודלם העצום, נתוני האימון הנרחבים שלהם ויכולתם לבצע מגוון רחב של משימות שפה עם אימון ספציפי למשימה מינימלי. מודלים כמו הסדרות Llama, GPT או Claude הם דוגמאות ל-LLMs שחוללו מהפכה במה שאפשרי ב-NLP.
+
+לאורך הקורס תלמדו על קונספטים מסורתיים של NLP וטכניקות LLM חדישות, כיוון שהבנת היסודות של NLP חיונית לעבודה יעילה עם LLMs.
+
+## מה לצפות?[[what-to-expect]]
+
+הנה סקירה קצרה של הקורס:
+
+<div class="flex justify-center">
+<img class="block dark:hidden" src="https://huggingface.co/datasets/huggingface-course/documentation-images/resolve/main/en/chapter1/summary.svg" alt="סקירה קצרה של פרקי הקורס.">
+<img class="hidden dark:block" src="https://huggingface.co/datasets/huggingface-course/documentation-images/resolve/main/en/chapter1/summary-dark.svg" alt="סקירה קצרה של פרקי הקורס.">
+</div>
+
+- פרקים 1 עד 4 מספקים מבוא לקונספטים העיקריים של ספריית 🤗 Transformers. בסוף החלק הזה של הקורס תכירו איך מודלי Transformer עובדים ותדעו איך להשתמש במודל מה-[Hugging Face Hub](https://huggingface.co/models), לכוונן אותו על סט נתונים ולשתף את התוצאות ב-Hub!
+- פרקים 5 עד 8 מלמדים את היסודות של 🤗 Datasets ו-🤗 Tokenizers לפני הצלילה למשימות NLP קלאסיות וטכניקות LLM. בסוף החלק הזה תוכלו להתמודד עם אתגרי עיבוד השפה הנפוצים ביותר בעצמכם.
+- פרק 9 חורג מ-NLP כדי לכסות איך לבנות ולשתף דמואים של המודלים שלכם ב-🤗 Hub. בסוף החלק הזה תהיו מוכנים להציג את יישומי ה-🤗 Transformers שלכם לעולם!
+- פרקים 10 עד 12 צוללים לנושאי LLM מתקדמים כמו כיוונון עדין, ביטור סטי נתונים איכותיים ובניית מודלי חשיבה.
+
+הקורס הזה:
+
+* דורש ידע טוב של Python
+* עדיף לקחת אותו אחרי קורס מבוא ללמידה עמוקה, כמו [Practical Deep Learning for Coders](https://course.fast.ai/) של [fast.ai](https://www.fast.ai/) או אחת התוכניות שפותחו על ידי [DeepLearning.AI](https://www.deeplearning.ai/)
+* לא מצפה לידע קודם ב-[PyTorch](https://pytorch.org/) או [TensorFlow](https://www.tensorflow.org/), אבל היכרות מסוימת עם אחד מהם תעזור
+
+אחרי שתסיימו את הקורס הזה, אנו ממליצים לעיין ב-[Natural Language Processing Specialization](https://www.coursera.org/specializations/natural-language-processing?utm_source=deeplearning-ai&utm_medium=institutions&utm_campaign=20211011-nlp-2-hugging_face-page-nlp-refresh) של DeepLearning.AI, המכסה מגוון רחב של מודלי NLP מסורתיים כמו naive Bayes ו-LSTMs ששווה לדעת עליהם!
+
+## מי אנחנו?[[who-are-we]]
+
+על המחברים:
+
+[**Abubakar Abid**](https://huggingface.co/abidlabs) השלים את הדוקטורט שלו בסטנפורד בלמידת מכונה יישומית. במהלך הדוקטורט שלו הוא הקים את [Gradio](https://github.com/gradio-app/gradio), ספריית Python קוד פתוח ששימשה לבניית למעלה מ-600,000 דמואי למידת מכונה. Gradio נרכשה על ידי Hugging Face, שם Abubakar משמש כעת כמוביל צוות למידת מכונה.
+
+[**Ben Burtenshaw**](https://huggingface.co/burtenshaw) הוא מהנדס למידת מכונה ב-Hugging Face. הוא השלים את הדוקטורט שלו בעיבוד שפה טבעית באוניברסיטת אנטוורפן, שם הוא יישם מודלי Transformer לייצור סיפורי ילדים למטרת שיפור כישורי הקריאה. מאז הוא התמקד בחומרי חינוך וכלים לקהילה הרחבה.
+
+[**Matthew Carrigan**](https://huggingface.co/Rocketknight1) הוא מהנדס למידת מכונה ב-Hugging Face. הוא גר בדבלין, אירלנד ועבד בעבר כמהנדס ML ב-Parse.ly ולפני כן כחוקר פוסט-דוקטורטי בטריניטי קולג' דבלין. הוא לא מאמין שנגיע ל-AGI על ידי הגדלת הארכיטקטורות הקיימות, אבל יש לו תקוות גבוהות לאלמוות רובוטית בכל זאת.
+
+[**Lysandre Debut**](https://huggingface.co/lysandre) הוא מהנדס למידת מכונה ב-Hugging Face ועבד על ספריית 🤗 Transformers מהשלבים המוקדמים מאוד של הפיתוח. המטרה שלו היא להפוך NLP נגיש לכולם על ידי פיתוח כלים עם API פשוט מאוד.
+
+[**Sylvain Gugger**](https://huggingface.co/sgugger) הוא מהנדס מחקר ב-Hugging Face ואחד המתחזקים המרכזיים של ספריית 🤗 Transformers. בעבר הוא היה מדען מחקר ב-fast.ai, והוא שותף לכתיבת _[Deep Learning for Coders with fastai and PyTorch](https://learning.oreilly.com/library/view/deep-learning-for/9781492045519/)_ עם Jeremy Howard. המוקד העיקרי של המחקר שלו הוא הפיכת למידה עמוקה לנגישה יותר, על ידי עיצוב ושיפור טכניקות המאפשרות למודלים להתאמן מהר במשאבים מוגבלים.
+
+[**Dawood Khan**](https://huggingface.co/dawoodkhan82) הוא מהנדס למידת מכונה ב-Hugging Face. הוא מניו יורק וסיים את האוניברסיטה של ניו יורק בלימודי מדעי המחשב. אחרי שעבד כמהנדס iOS כמה שנים, Dawood עזב כדי להקים את Gradio עם שותפיו המייסדים. Gradio נרכשה בסופו של דבר על ידי Hugging Face.
+
+[**Merve Noyan**](https://huggingface.co/merve) היא advocate למפתחים ב-Hugging Face, עובדת על פיתוח כלים ובניית תוכן סביבם כדי לדמוקרטיזציה של למידת מכונה לכולם.
+
+[**Lucile Saulnier**](https://huggingface.co/SaulLu) היא מהנדסת למידת מכונה ב-Hugging Face, מפתחת ותומכת בשימוש בכלי קוד פתוח. היא מעורבת בפעילות גם בפרויקטי מחקר רבים בתחום עיבוד השפה הטבעית כמו אימון שיתופי ו-BigScience.
+
+[**Lewis Tunstall**](https://huggingface.co/lewtun) הוא מהנדס למידת מכונה ב-Hugging Face, המתמקד בפיתוח כלי קוד פתוח והפיכתם נגישים לקהילה הרחבה. הוא גם מחבר שותף לספר O'Reilly [Natural Language Processing with Transformers](https://www.oreilly.com/library/view/natural-language-processing/9781098136789/).
+
+[**Leandro von Werra**](https://huggingface.co/lvwerra) הוא מהנדס למידת מכונה בצוות הקוד הפתוח ב-Hugging Face וגם מחבר שותף לספר O'Reilly [Natural Language Processing with Transformers](https://www.oreilly.com/library/view/natural-language-processing/9781098136789/). יש לו כמה שנות ניסיון בתעשייה בהכנסת פרויקטי NLP לייצור על ידי עבודה על כל ערימת למידת המכונה.
+
+## שאלות נפוצות[[faq]]
+
+הנה תשובות לשאלות נפוצות:
+
+- **האם לקיחת הקורס הזה מובילה לתעודה?**
+כרגע אין לנו תעודה לקורס הזה. עם זאת, אנחנו עובדים על תוכנית תעודות לאקוסיסטם Hugging Face -- הישארו מעודכנים!
+
+- **כמה זמן אני צריך להשקיע בקורס הזה?**
+כל פרק בקורס הזה מיועד להושלם תוך שבוע, עם בערך 6-8 שעות עבודה בשבוע. עם זאת, אתם יכולים לקחת כמה זמן שאתם צריכים כדי להשלים את הקורס.
+
+- **איפה אני יכול לשאול שאלה אם יש לי אחת?**
+אם יש לכם שאלה על כל חלק בקורס, פשוט לחצו על באנר "*שאלו שאלה*" בחלק העליון של הדף כדי להפנות אוטומטית לחלק הנכון של [פורומי Hugging Face](https://discuss.huggingface.co/):
+
+<img src="https://huggingface.co/datasets/huggingface-course/documentation-images/resolve/main/en/chapter1/forum-button.png" alt="קישור לפורומי Hugging Face" width="75%">
+
+שימו לב שרשימה של [רעיונות לפרויקטים](https://discuss.huggingface.co/c/course/course-event/25) זמינה גם בפורומים אם אתם רוצים להתרגל יותר אחרי שתסיימו את הקורס.
+
+- **איפה אני יכול לקבל את הקוד לקורס?**
+לכל חלק, לחצו על הבאנר בחלק העליון של הדף כדי להריץ את הקוד ב-Google Colab או Amazon SageMaker Studio Lab:
+
+<img src="https://huggingface.co/datasets/huggingface-course/documentation-images/resolve/main/en/chapter1/notebook-buttons.png" alt="קישור למחברות הקורס של Hugging Face" width="75%">
+
+מחברות Jupyter המכילות את כל הקוד מהקורס מתארחות במאגר [`huggingface/notebooks`](https://github.com/huggingface/notebooks). אם אתם רוצים לייצר אותן מקומית, עיינו בהוראות במאגר [`course`](https://github.com/huggingface/course#-jupyter-notebooks) ב-GitHub.
+
+
+- **איך אני יכול לתרום לקורס?**
+יש הרבה דרכים לתרום לקורס! אם אתם מוצאים שגיאת כתיב או באג, פתחו issue במאגר [`course`](https://github.com/huggingface/course). אם אתם רוצים לעזור לתרגם את הקורס לשפת האם שלכם, בדקו את ההוראות [כאן](https://github.com/huggingface/course#translating-the-course-into-your-language).
+
+- **אילו בחירות נעשו לכל תרגום?**
+לכל תרגום יש מילון מונחים וקובץ `TRANSLATING.txt` המפרט את הבחירות שנעשו לז'רגון למידת מכונה וכו'. אתם יכולים למצוא דוגמה לגרמנית [כאן](https://github.com/huggingface/course/blob/main/chapters/de/TRANSLATING.txt).
+
+
+- **האם אני יכול לעשות שימוש חוזר בקורס הזה?**
+כמובן! הקורס מותר תחת [רישיון Apache 2](https://www.apache.org/licenses/LICENSE-2.0.html) הסלחני. זה אומר שאתם חייבים לתת קרדיט מתאים, לספק קישור לרישיון ולציין אם נעשו שינויים. אתם יכולים לעשות זאת בכל דרך סבירה, אבל לא בדרך שמציעה שמעניק הרישיון תומך בכם או בשימוש שלכם. אם אתם רוצים לצטט את הקורס, השתמשו ב-BibTeX הבא:
+
+```
+@misc{huggingfacecourse,
+  author = {Hugging Face},
+  title = {The Hugging Face Course, 2022},
+  howpublished = "\url{https://huggingface.co/course}",
+  year = {2022},
+  note = "[Online; accessed <today>]"
+}
+```
+
+## שפות ותרגומים[[languages-and-translations]]
+
+הודות לקהילה הנפלאה שלנו, הקורס זמין בשפות רבות מעבר לאנגלית 🔥! בדקו את הטבלה למטה כדי לראות אילו שפות זמינות ומי תרם לתרגומים:
+
+| שפה                                                                      | מחברים                                                                                                                                                                                                                                                                                                                                                  |
+|:------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [צרפתית](https://huggingface.co/course/fr/chapter1/1)                         | [@lbourdois](https://github.com/lbourdois), [@ChainYo](https://github.com/ChainYo), [@melaniedrevet](https://github.com/melaniedrevet), [@abdouaziz](https://github.com/abdouaziz)                                                                                                                                                                       |
+| [ויטנמית](https://huggingface.co/course/vi/chapter1/1)                     | [@honghanhh](https://github.com/honghanhh)                                                                                                                                                                                                                                                                                                               |
+| [סינית (מפושטת)](https://huggingface.co/course/zh-CN/chapter1/1)        | [@zhlhyx](https://github.com/zhlhyx), [petrichor1122](https://github.com/petrichor1122), [@yaoqih](https://github.com/yaoqih)                                                                                                                                                                                                                    |
+| [בנגלית](https://huggingface.co/course/bn/chapter1/1) (בעבודה)                  | [@avishek-018](https://github.com/avishek-018), [@eNipu](https://github.com/eNipu)                                                                                                                                                                                                                                                                       |
+| [גרמנית](https://huggingface.co/course/de/chapter1/1) (בעבודה)                   | [@JesperDramsch](https://github.com/JesperDramsch), [@MarcusFra](https://github.com/MarcusFra), [@fabridamicelli](https://github.com/fabridamicelli)                                                                                                                                                                                                     |
+| [ספרדית](https://huggingface.co/course/es/chapter1/1) (בעבודה)                  | [@camartinezbu](https://github.com/camartinezbu), [@munozariasjm](https://github.com/munozariasjm), [@fordaz](https://github.com/fordaz)                                                                                                                                                                                                                 |
+| [פרסית](https://huggingface.co/course/fa/chapter1/1) (בעבודה)                  | [@jowharshamshiri](https://github.com/jowharshamshiri), [@schoobani](https://github.com/schoobani)                                                                                                                                                                                                                                                       |
+| [גוג'ראטית](https://huggingface.co/course/gu/chapter1/1) (בעבודה)                 | [@pandyaved98](https://github.com/pandyaved98)                                                                                                                                                                                                                                                                                                           |
+| [עברית](https://huggingface.co/course/he/chapter1/1) (בעבודה)                   | [@omer-dor](https://github.com/omer-dor)                                                                                                                                                                                                                                                                                                                 |
+| [הינדית](https://huggingface.co/course/hi/chapter1/1) (בעבודה)                    | [@pandyaved98](https://github.com/pandyaved98)                                                                                                                                                                                                                                                                                                           |
+| [אינדונזית](https://huggingface.co/course/id/chapter1/1) (בעבודה)         | [@gstdl](https://github.com/gstdl)                                                                                                                                                                                                                                                                                                                       |
+| [איטלקית](https://huggingface.co/course/it/chapter1/1) (בעבודה)                  | [@CaterinaBi](https://github.com/CaterinaBi), [@ClonedOne](https://github.com/ClonedOne),    [@Nolanogenn](https://github.com/Nolanogenn), [@EdAbati](https://github.com/EdAbati), [@gdacciaro](https://github.com/gdacciaro)                                                                                                                            |
+| [יפנית](https://huggingface.co/course/ja/chapter1/1) (בעבודה)                 | [@hiromu166](https://github.com/@hiromu166), [@younesbelkada](https://github.com/@younesbelkada), [@HiromuHota](https://github.com/@HiromuHota)                                                                                                                                                                                                          |
+| [קוריאנית](https://huggingface.co/course/ko/chapter1/1) (בעבודה)                   | [@Doohae](https://github.com/Doohae), [@wonhyeongseo](https://github.com/wonhyeongseo), [@dlfrnaos19](https://github.com/dlfrnaos19)                                                                                                                                                                                                                     |
+| [פורטוגזית](https://huggingface.co/course/pt/chapter1/1) (בעבודה)               | [@johnnv1](https://github.com/johnnv1), [@victorescosta](https://github.com/victorescosta), [@LincolnVS](https://github.com/LincolnVS)                                                                                                                                                                                                                   |
+| [רוסית](https://huggingface.co/course/ru/chapter1/1) (בעבודה)                  | [@pdumin](https://github.com/pdumin), [@svv73](https://github.com/svv73)                                                                                                                                                                                                                                                                                 |
+| [תאילנדית](https://huggingface.co/course/th/chapter1/1) (בעבודה)                     | [@peeraponw](https://github.com/peeraponw), [@a-krirk](https://github.com/a-krirk), [@jomariya23156](https://github.com/jomariya23156), [@ckingkan](https://github.com/ckingkan)                                                                                                                                                                         |
+| [טורקית](https://huggingface.co/course/tr/chapter1/1) (בעבודה)                  | [@tanersekmen](https://github.com/tanersekmen), [@mertbozkir](https://github.com/mertbozkir), [@ftarlaci](https://github.com/ftarlaci), [@akkasayaz](https://github.com/akkasayaz)                                                                                                                                                                       |
+| [סינית (מסורתית)](https://huggingface.co/course/zh-TW/chapter1/1) (בעבודה) | [@davidpeng86](https://github.com/davidpeng86)                                                                                                                                                                                                                                                                                                           |
+
+לכמה שפות, [סרטוני היוטיוב של הקורס](https://youtube.com/playlist?list=PLo2EIpI_JMQvWfQndUesu0nPBAtZ9gP1o) כוללים כתוביות בשפה. אתם יכולים להפעיל אותן על ידי לחיצה ראשונה על כפתור _CC_ בפינה הימנית התחתונה של הסרטון. אז, תחת סמל ההגדרות ⚙️, אתם יכולים לבחור את השפה שאתם רוצים על ידי בחירת האפשרות _Subtitles/CC_.
+
+<img src="https://huggingface.co/datasets/huggingface-course/documentation-images/resolve/main/en/chapter1/subtitles.png" alt="הפעלת כתוביות לסרטוני היוטיוב של קורס Hugging Face" width="75%">
+
+<Tip>
+לא רואים את השפה שלכם בטבלה למעלה או שאתם רוצים לתרום לתרגום קיים? אתם יכולים לעזור לנו לתרגם את הקורס על ידי מעקב אחר ההוראות <a href="https://github.com/huggingface/course#translating-the-course-into-your-language">כאן</a>.
+</Tip>
+
+## בואו נתחיל 🚀
+
+אתם מוכנים לצאת לדרך? בפרק הזה תלמדו:
+
+* איך להשתמש בפונקציית `pipeline()` כדי לפתור משימות NLP כמו יצירת טקסט וסיווג
+* על ארכיטקטורת Transformer
+* איך להבחין בין ארכיטקטורות encoder, decoder ו-encoder-decoder ומקרי השימוש שלהן
+
