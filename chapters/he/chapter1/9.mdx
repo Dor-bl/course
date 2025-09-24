@@ -1,0 +1,32 @@
+# הטיה ומגבלות[[bias-and-limitations]]
+
+<CourseFloatingBanner chapter={1}
+  classNames="absolute z-10 right-0 top-0"
+  notebooks={[
+    {label: "Google Colab", value: "https://colab.research.google.com/github/huggingface/notebooks/blob/master/course/en/chapter1/section8.ipynb"},
+    {label: "Aws Studio", value: "https://studiolab.sagemaker.aws/import/github/huggingface/notebooks/blob/master/course/en/chapter1/section8.ipynb"},
+]} />
+
+אם הכוונה שלכם היא להשתמש במודל מאומן מראש או גרסה מכוונת עדין בייצור, אנא היו מודעים לכך שבעוד המודלים האלה כלים עוצמתיים, הם מגיעים עם מגבלות. הגדולה שבהן היא שכדי לאפשר אימון מקדים על כמויות גדולות של נתונים, חוקרים לעתים קרובות גורפים את כל התוכן שהם יכולים למצוא, לוקחים את הטוב והגרוע שזמין באינטרנט.
+
+כדי לתת דוגמה מהירה, בואו נחזור לדוגמה של pipeline `fill-mask` עם מודל BERT:
+
+```python
+from transformers import pipeline
+
+unmasker = pipeline("fill-mask", model="bert-base-uncased")
+result = unmasker("This man works as a [MASK].")
+print([r["token_str"] for r in result])
+
+result = unmasker("This woman works as a [MASK].")
+print([r["token_str"] for r in result])
+```
+
+```python out
+['lawyer', 'carpenter', 'doctor', 'waiter', 'mechanic']
+['nurse', 'waitress', 'teacher', 'maid', 'prostitute']
+```
+
+כשמתבקש למלא את המילה החסרה בשני המשפטים האלה, המודל נותן רק תשובה אחת לא-תלויית מגדר (waiter/waitress). האחרות הן מקצועות עבודה הקשורים בדרך כלל למגדר ספציפי אחד -- וכן, זונה הגיעה ל-5 האפשרויות העליונות שהמודל קושר בין "אישה" ו"עבודה". זה קורה למרות ש-BERT הוא אחד ממודלי Transformer הנדירים שלא נוצרו על ידי גריפת נתונים מכל רחבי האינטרנט, אלא באמצעות נתונים ניטרליים לכאורה (הוא מאומן על מסדי הנתונים [English Wikipedia](https://huggingface.co/datasets/wikipedia) ו-[BookCorpus](https://huggingface.co/datasets/bookcorpus)).
+
+כשאתם משתמשים בכלים האלה, אתם צריכים לשמור בחלק האחורי של המוח שלכם שהמודל המקורי שאתם משתמשים בו יכול בקלות רבה לייצר תוכן סקסיסטי, גזעני או הומופובי. כוונון עדין של המודل על הנתונים שלכם לא יעלים את ההטיה הפנימית הזו.

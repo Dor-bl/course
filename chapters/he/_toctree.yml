@@ -2,3 +2,27 @@
   sections:
   - local: chapter0/1
     title: מבוא
+- title: 1. מודלי Transformer
+  sections:
+  - local: chapter1/1
+    title: מבוא
+  - local: chapter1/2
+    title: עיבוד שפה טבעית ומודלי שפה גדולים
+  - local: chapter1/3
+    title: Transformers, מה הם יכולים לעשות?
+  - local: chapter1/4
+    title: איך עובדים מודלי Encoder?
+  - local: chapter1/5
+    title: איך עובדים מודלי Decoder?
+  - local: chapter1/6
+    title: איך עובדים מודלי Encoder-decoder?
+  - local: chapter1/7
+    title: מודלי Sequence-to-sequence
+  - local: chapter1/8
+    title: איך לקבל עזרה
+  - local: chapter1/9
+    title: הטיה ומגבלות
+  - local: chapter1/10
+    title: סיכום
+  - local: chapter1/11
+    title: מבחן!

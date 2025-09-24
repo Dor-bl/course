@@ -1,0 +1,414 @@
+# Transformers, מה הם יכולים לעשות?[[transformers-what-can-they-do]]
+
+<CourseFloatingBanner chapter={1}
+  classNames="absolute z-10 right-0 top-0"
+  notebooks={[
+    {label: "Google Colab", value: "https://colab.research.google.com/github/huggingface/notebooks/blob/master/course/en/chapter1/section3.ipynb"},
+    {label: "Aws Studio", value: "https://studiolab.sagemaker.aws/import/github/huggingface/notebooks/blob/master/course/en/chapter1/section3.ipynb"},
+]} />
+
+בחלק הזה נסתכל על מה מודלי Transformer יכולים לעשות ונשתמש בכלי הראשון שלנו מספריית 🤗 Transformers: הפונקציה `pipeline()`.
+
+<Tip>
+👀 רואים את הכפתור <em>פתח ב-Colab</em> בפינה הימנית העליונה? לחצו עליו כדי לפתוח מחברת Google Colab עם כל דוגמאות הקוד של החלק הזה. הכפתור הזה יהיה נוכח בכל חלק המכיל דוגמאות קוד.
+
+אם אתם רוצים להריץ את הדוגמאות מקומית, אנו ממליצים להסתכל על <a href="/course/chapter0">ההתקנה</a>.
+</Tip>
+
+## Transformers הם בכל מקום![[transformers-are-everywhere]]
+
+מודלי Transformer משמשים לפתרון כל מיני משימות במודליות שונות, כולל עיבוד שפה טבעית (NLP), חזון מחשב, עיבוד אודיו ועוד. הנה כמה מהחברות והארגונים המשתמשים ב-Hugging Face ובמודלי Transformer, שגם תורמים בחזרה לקהילה על ידי שיתוף המודלים שלהם:
+
+<img src="https://huggingface.co/datasets/huggingface-course/documentation-images/resolve/main/en/chapter1/companies.PNG" alt="חברות המשתמשות ב-Hugging Face" width="100%">
+
+[ספריית 🤗 Transformers](https://github.com/huggingface/transformers) מספקת את הפונקציונליות ליצור ולהשתמש במודלים המשותפים האלה. [Model Hub](https://huggingface.co/models) מכיל מיליוני מודלים מאומנים מראש שכל אחד יכול להוריד ולהשתמש בהם. אתם יכולים גם להעלות את המודלים שלכם ל-Hub!
+
+<Tip>
+
+⚠️ Hugging Face Hub לא מוגבל למודלי Transformer. כל אחד יכול לשתף כל סוג של מודלים או סטי נתונים שהוא רוצה! <a href="https://huggingface.co/join">צרו חשבון huggingface.co</a> כדי ליהנות מכל התכונות הזמינות!
+
+</Tip>
+
+לפני שנצלול לאיך מודלי Transformer עובדים מתחת למכסה המנוע, בואו נסתכל על כמה דוגמאות של איך ניתן להשתמש בהם כדי לפתור כמה בעיות NLP מעניינות.
+
+## עבודה עם pipelines[[working-with-pipelines]]
+
+<Youtube id="tiZFewofSLM" />
+
+האובייקט הבסיסי ביותר בספריית 🤗 Transformers הוא הפונקציה `pipeline()`. היא מחברת מודל עם שלבי העיבוד המקדים והמאוחרים הדרושים לו, ומאפשרת לנו להכניס ישירות כל טקסט ולקבל תשובה מובנת:
+
+```python
+from transformers import pipeline
+
+classifier = pipeline("sentiment-analysis")
+classifier("I've been waiting for a HuggingFace course my whole life.")
+```
+
+```python out
+[{'label': 'POSITIVE', 'score': 0.9598047137260437}]
+```
+
+אנחנו יכולים אפילו להעביר כמה משפטים!
+
+```python
+classifier(
+    ["I've been waiting for a HuggingFace course my whole life.", "I hate this so much!"]
+)
+```
+
+```python out
+[{'label': 'POSITIVE', 'score': 0.9598047137260437},
+ {'label': 'NEGATIVE', 'score': 0.9994558095932007}]
+```
+
+כברירת מחדל, ה-pipeline הזה בוחר מודל מאומן מראש מסוים שכוונן לניתוח סנטימנט באנגלית. המודל מורד ונשמר במטמון כשאתם יוצרים את האובייקט `classifier`. אם אתם מריצים שוב את הפקודה, המودל השמור במטמון ישמש במקום ואין צורך להוריד את המודל שוב.
+
+יש שלושה שלבים עיקריים כשאתם מעבירים טקסט כלשהו ל-pipeline:
+
+1. הטקסט מעובד מראש לפורמט שהמודל יכול להבין.
+2. הקלטים המעובדים מראש מועברים למודל.
+3. התחזיות של המודל מעובדות לאחר מכן, כך שתוכלו להבין אותן.
+
+## pipelines זמינים למודליות שונות
+
+הפונקציה `pipeline()` תומכת במודליות מרובות, ומאפשרת לכם לעבוד עם טקסט, תמונות, אודיו ואפילו משימות מולטי-מודליות. בקורס הזה נתמקד במשימות טקסט, אבל שימושי להבין את הפוטנציאל של ארכיטקטורת ה-transformer, אז נתאר אותו בקצרה.
+
+הנה סקירה של מה שזמין:
+
+<Tip>
+
+לרשימה מלאה ומעודכנת של pipelines, ראו את [התיעוד של 🤗 Transformers](https://huggingface.co/docs/hub/en/models-tasks).
+
+</Tip>
+
+### pipelines טקסט
+
+- `text-generation`: יצירת טקסט מהנחיה
+- `text-classification`: סיווג טקסט לקטגוריות מוגדרות מראש
+- `summarization`: יצירת גרסה קצרה יותר של טקסט תוך שמירה על מידע מפתח
+- `translation`: תרגום טקסט משפה אחת לאחרת
+- `zero-shot-classification`: סיווג טקסט ללא אימון קודם על תוויות ספציפיות
+- `feature-extraction`: חילוץ ייצוגי וקטור של טקסט
+
+### pipelines תמונה
+
+- `image-to-text`: יצירת תיאורי טקסט של תמונות
+- `image-classification`: זיהוי אובייקטים בתמונה
+- `object-detection`: איתור וזיהוי אובייקטים בתמונות
+
+### pipelines אודיו
+
+- `automatic-speech-recognition`: המרת דיבור לטקסט
+- `audio-classification`: סיווג אודיו לקטגוריות
+- `text-to-speech`: המרת טקסט לאודיו מדוכר
+
+### pipelines מולטי-מודליים
+
+- `image-text-to-text`: מענה לתמונה בהתבסס על הנחיית טקסט
+
+בואו נחקור כמה מה-pipelines האלה בפירוט יותר!
+
+## סיווג Zero-shot[[zero-shot-classification]]
+
+נתחיל בהתמודדות עם משימה מאתגרת יותר שבה אנחנו צריכים לסווג טקסטים שלא תויגו. זה תרחיש נפוץ בפרויקטים מהעולם האמיתי כי ביאור טקסט בדרך כלל גוזל זמן ודורש מומחיות תחומית. למקרה השימוש הזה, ה-pipeline `zero-shot-classification` חזק מאוד: הוא מאפשר לכם לציין באילו תוויות להשתמש לסיווג, כך שאתם לא צריכים להסתמך על התוויות של המודל המאומן מראש. אתם כבר ראיתם איך המודל יכול לסווג משפט כחיובי או שלילי באמצעות שתי התוויות האלה — אבל הוא יכול גם לסווג את הטקסט באמצעות כל סט אחר של תוויות שאתם אוהבים.
+
+```python
+from transformers import pipeline
+
+classifier = pipeline("zero-shot-classification")
+classifier(
+    "This is a course about the Transformers library",
+    candidate_labels=["education", "politics", "business"],
+)
+```
+
+```python out
+{'sequence': 'This is a course about the Transformers library',
+ 'labels': ['education', 'business', 'politics'],
+ 'scores': [0.8445963859558105, 0.111976258456707, 0.043427448719739914]}
+```
+
+ה-pipeline הזה נקרא _zero-shot_ כי אתם לא צריכים לכוונן עדין את המודל על הנתונים שלכם כדי להשתמש בו. הוא יכול להחזיר ישירות ציוני הסתברות לכל רשימת תוויות שאתם רוצים!
+
+<Tip>
+
+✏️ **נסו זאת!** שחקו עם רצפים ותוויות משלכם וראו איך המודל מתנהג.
+
+</Tip>
+
+
+## יצירת טקסט[[text-generation]]
+
+עכשיו בואו נראה איך להשתמש ב-pipeline כדי לייצר קצת טקסט. הרעיון העיקרי כאן הוא שאתם מספקים הנחיה והמודל ישלים אותה אוטומטית על ידי יצירת הטקסט הנותר. זה דומה לתכונת הטקסט החזוי שנמצאת בטלפונים רבים. יצירת טקסט כוללת אקראיות, אז זה נורמלי אם אתם לא מקבלים את אותן התוצאות כמו שמוצג למטה.
+
+```python
+from transformers import pipeline
+
+generator = pipeline("text-generation")
+generator("In this course, we will teach you how to")
+```
+
+```python out
+[{'generated_text': 'In this course, we will teach you how to understand and use '
+                    'data flow and data interchange when handling user data. We '
+                    'will be working with one or more of the most commonly used '
+                    'data flows — data flows of various types, as seen by the '
+                    'HTTP'}]
+```
+
+אתם יכולים לשלוט בכמה רצפים שונים יפוצרו עם הארגומנט `num_return_sequences` ובאורך הכולל של טקסט הפלט עם הארגומנט `max_length`.
+
+<Tip>
+
+✏️ **נסו זאת!** השתמשו בארגומנטים `num_return_sequences` ו-`max_length` כדי לייצר שני משפטים של 15 מילים כל אחד.
+
+</Tip>
+
+## שימוש בכל מודל מה-Hub ב-pipeline[[using-any-model-from-the-hub-in-a-pipeline]]
+
+הדוגמאות הקודמות השתמשו במודל ברירת המחדל למשימה הנתונה, אבל אתם יכולים גם לבחור מודל מסוים מה-Hub להשתמש בו ב-pipeline למשימה ספציפית — נגיד, יצירת טקסט. עברו ל-[Model Hub](https://huggingface.co/models) ולחצו על התג המתאים משמאל כדי להציג רק את המודלים הנתמכים למשימה הזו. אתם אמורים להגיע לדף כמו [זה](https://huggingface.co/models?pipeline_tag=text-generation).
+
+בואו ננסה את המודל [`HuggingFaceTB/SmolLM2-360M`](https://huggingface.co/HuggingFaceTB/SmolLM2-360M)! הנה איך לטעון אותו באותו pipeline כמו קודם:
+
+```python
+from transformers import pipeline
+
+generator = pipeline("text-generation", model="HuggingFaceTB/SmolLM2-360M")
+generator(
+    "In this course, we will teach you how to",
+    max_length=30,
+    num_return_sequences=2,
+)
+```
+
+```python out
+[{'generated_text': 'In this course, we will teach you how to manipulate the world and '
+                    'move your mental and physical capabilities to your advantage.'},
+ {'generated_text': 'In this course, we will teach you how to become an expert and '
+                    'practice realtime, and with a hands on experience on both real '
+                    'time and real'}]
+```
+
+אתם יכולים לחדד את החיפוש שלכם אחר מודל על ידי לחיצה על תגי השפה, ולבחור מודל שיפיץ טקסט בשפה אחרת. Model Hub אפילו מכיל נקודות ביקורת למודלים רב-לשוניים התומכים במספר שפות.
+
+ברגע שאתם בוחרים מודל על ידי לחיצה עליו, תראו שיש ווידג'ט שמאפשר לכם לנסות אותו ישירות אונליין. בדרך הזו אתם יכולים לבדוק מהר את היכולות של המודל לפני הורדתו.
+
+<Tip>
+
+✏️ **נסו זאת!** השתמשו במסננים כדי למצוא מודל יצירת טקסט לשפה אחרת. הרגישו חופשיים לשחק עם הווידג'ט ולהשתמש בו ב-pipeline!
+
+</Tip>
+
+### ספקי Inference[[inference-providers]]
+
+כל המודלים ניתנים לבדיקה ישירות דרך הדפדפן שלכם באמצעות ספקי Inference, הזמינים באתר [website](https://huggingface.co/docs/inference-providers/en/index) של Hugging Face. אתם יכולים לשחק עם המודל ישירות בדף הזה על ידי הזנת טקסט מותאם אישית וצפייה במודל מעבד את נתוני הקלט.
+
+ספקי Inference המפעילים את הווידג'ט זמינים גם כמוצר בתשלום, שמתאים אם אתם זקוקים לו לזרימות העבודה שלכם. ראו את [דף התמחור](https://huggingface.co/docs/inference-providers/en/pricing) לפרטים נוספים.
+
+## מילוי מסכה[[mask-filling]]
+
+ה-pipeline הבא שתנסו הוא `fill-mask`. הרעיון של המשימה הזו הוא למלא את החללים בטקסט נתון:
+
+```python
+from transformers import pipeline
+
+unmasker = pipeline("fill-mask")
+unmasker("This course will teach you all about <mask> models.", top_k=2)
+```
+
+```python out
+[{'sequence': 'This course will teach you all about mathematical models.',
+  'score': 0.19619831442832947,
+  'token': 30412,
+  'token_str': ' mathematical'},
+ {'sequence': 'This course will teach you all about computational models.',
+  'score': 0.04052725434303284,
+  'token': 38163,
+  'token_str': ' computational'}]
+```
+
+הארגומנט `top_k` מכוון כמה אפשרויות אתם רוצים שיוצגו. שימו לב שכאן המודל ממלא את המילה המיוחדת `<mask>`, שלעתים קרובות מכונה *מסכה token*. מודלי מילוי מסכה אחרים עלולים לקבל מסכות token שונות, אז תמיד טוב לוודא את מילת המסכה הנכונה כשחוקרים מודלים אחרים. דרך אחת לבדוק זאת היא על ידי הסתכלות על מילת המסכה המשמשת בווידג'ט.
+
+<Tip>
+
+✏️ **נסו זאת!** חפשו את המודל `bert-base-cased` ב-Hub וזהו את מילת המסכה שלו בווידג'ט Inference API. מה המודל הזה חוזה למשפט בדוגמה של `pipeline` שלנו למעלה?
+
+</Tip>
+
+## זיהוי ישויות מוזכרות[[named-entity-recognition]]
+
+זיהוי ישויות מוזכרות (NER) הוא משימה שבה המודל צריך למצוא אילו חלקים בטקסט הקלט מתאימים לישויות כמו אנשים, מקומות או ארגונים. בואו נסתכל על דוגמה:
+
+```python
+from transformers import pipeline
+
+ner = pipeline("ner", grouped_entities=True)
+ner("My name is Sylvain and I work at Hugging Face in Brooklyn.")
+```
+
+```python out
+[{'entity_group': 'PER', 'score': 0.99816, 'word': 'Sylvain', 'start': 11, 'end': 18}, 
+ {'entity_group': 'ORG', 'score': 0.97960, 'word': 'Hugging Face', 'start': 33, 'end': 45}, 
+ {'entity_group': 'LOC', 'score': 0.99321, 'word': 'Brooklyn', 'start': 49, 'end': 57}]
+```
+
+כאן המודל זיהה נכון ש-Sylvain הוא אדם (PER), Hugging Face ארגון (ORG), ו-Brooklyn מקום (LOC).
+
+אנחנו מעבירים את האפשרות `grouped_entities=True` בפונקציית יצירת ה-pipeline כדי לומר ל-pipeline לקבץ מחדש יחד את החלקים של המשפט המתאימים לאותה ישות: כאן המודל קיבץ נכון את "Hugging" ו-"Face" כארגון יחיד, למרות שהשם מורכב ממילים מרובות. למעשה, כפי שנראה בפרק הבא, העיבוד המקדים אפילו מפצל כמה מילים לחלקים קטנים יותר. למשל, `Sylvain` מפוצל לארבעה חלקים: `S`, `##yl`, `##va`, ו-`##in`. בשלב העיבוד המאוחר, ה-pipeline הצליח לקבץ מחדש את החלקים האלה.
+
+<Tip>
+
+✏️ **נסו זאת!** חפשו ב-Model Hub מודל המסוגל לעשות תיוג חלקי דיבור (בדרך כלל מקוצר כ-POS) באנגלית. מה המודל הזה חוזה למשפט בדוגמה למעלה?
+
+</Tip>
+
+## מענה על שאלות[[question-answering]]
+
+ה-pipeline `question-answering` עונה על שאלות באמצעות מידע מהקשר נתון:
+
+```python
+from transformers import pipeline
+
+question_answerer = pipeline("question-answering")
+question_answerer(
+    question="Where do I work?",
+    context="My name is Sylvain and I work at Hugging Face in Brooklyn",
+)
+```
+
+```python out
+{'score': 0.6385916471481323, 'start': 33, 'end': 45, 'answer': 'Hugging Face'}
+```
+
+שימו לב שה-pipeline הזה עובד על ידי חילוץ מידע מההקשר המסופק; הוא לא מייצר את התשובה.
+
+## סיכום[[summarization]]
+
+סיכום הוא המשימה של צמצום טקסט לטקסט קצר יותר תוך שמירה על כל (או רוב) ההיבטים החשובים המוזכרים בטקסט. הנה דוגמה:
+
+```python
+from transformers import pipeline
+
+summarizer = pipeline("summarization")
+summarizer(
+    """
+    America has changed dramatically during recent years. Not only has the number of 
+    graduates in traditional engineering disciplines such as mechanical, civil, 
+    electrical, chemical, and aeronautical engineering declined, but in most of 
+    the premier American universities engineering curricula now concentrate on 
+    and encourage largely the study of engineering science. As a result, there 
+    are declining offerings in engineering subjects dealing with infrastructure, 
+    the environment, and related issues, and greater concentration on high 
+    technology subjects, largely supporting increasingly complex scientific 
+    developments. While the latter is important, it should not be at the expense 
+    of more traditional engineering.
+
+    Rapidly developing economies such as China and India, as well as other 
+    industrial countries in Europe and Asia, continue to encourage and advance 
+    the teaching of engineering. Both China and India, respectively, graduate 
+    six and eight times as many traditional engineers as does the United States. 
+    Other industrial countries at minimum maintain their output, while America 
+    suffers an increasingly serious decline in the number of engineering graduates 
+    and a lack of well-educated engineers.
+"""
+)
+```
+
+```python out
+[{'summary_text': ' America has changed dramatically during recent years . The '
+                  'number of engineering graduates in the U.S. has declined in '
+                  'traditional engineering disciplines such as mechanical, civil '
+                  ', electrical, chemical, and aeronautical engineering . Rapidly '
+                  'developing economies such as China and India, as well as other '
+                  'industrial countries in Europe and Asia, continue to encourage '
+                  'and advance engineering .'}]
+```
+
+כמו עם יצירת טקסט, אתם יכולים לציין `max_length` או `min_length` לתוצאה.
+
+
+## תרגום[[translation]]
+
+לתרגום, אתם יכולים להשתמש במודל ברירת מחדל אם אתם מספקים זוג שפות בשם המשימה (כמו `"translation_en_to_fr"`), אבל הדרך הקלה ביותר היא לבחור את המודל שאתם רוצים להשתמש בו ב-[Model Hub](https://huggingface.co/models). כאן ננסה לתרגם מצרפתית לאנגלית:
+
+```python
+from transformers import pipeline
+
+translator = pipeline("translation", model="Helsinki-NLP/opus-mt-fr-en")
+translator("Ce cours est produit par Hugging Face.")
+```
+
+```python out
+[{'translation_text': 'This course is produced by Hugging Face.'}]
+```
+
+כמו עם יצירת טקסט וסיכום, אתם יכולים לציין `max_length` או `min_length` לתוצאה.
+
+<Tip>
+
+✏️ **נסו זאת!** חפשו מודלי תרגום בשפות אחרות ונסו לתרגם את המשפט הקודם לכמה שפות שונות.
+
+</Tip>
+
+## pipelines תמונה ואודיו
+
+מעבר לטקסט, מודלי Transformer יכולים גם לעבוד עם תמונות ואודיו. הנה כמה דוגמאות:
+
+### סיווג תמונות
+
+```python
+from transformers import pipeline
+
+image_classifier = pipeline(
+    task="image-classification", model="google/vit-base-patch16-224"
+)
+result = image_classifier(
+    "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/pipeline-cat-chonk.jpeg"
+)
+print(result)
+```
+
+```python out
+[{'label': 'lynx, catamount', 'score': 0.43350091576576233},
+ {'label': 'cougar, puma, catamount, mountain lion, painter, panther, Felis concolor',
+  'score': 0.034796204417943954},
+ {'label': 'snow leopard, ounce, Panthera uncia',
+  'score': 0.03240183740854263},
+ {'label': 'Egyptian cat', 'score': 0.02394474856555462},
+ {'label': 'tiger cat', 'score': 0.02288915030658245}]
+```
+
+### זיהוי דיבור אוטומטי
+
+```python
+from transformers import pipeline
+
+transcriber = pipeline(
+    task="automatic-speech-recognition", model="openai/whisper-large-v3"
+)
+result = transcriber(
+    "https://huggingface.co/datasets/Narsil/asr_dummy/resolve/main/mlk.flac"
+)
+print(result)
+```
+
+```python out
+{'text': ' I have a dream that one day this nation will rise up and live out the true meaning of its creed.'}
+```
+
+## שילוב נתונים ממקורות מרובים
+
+יישום עוצמתי אחד של מודלי Transformer הוא היכולת שלהם לשלב ולעבד נתונים ממקורות מרובים. זה שימושי במיוחד כשאתם צריכים:
+
+1. לחפש במספר מסדי נתונים או מאגרים
+2. לאחד מידע מפורמטים שונים (טקסט, תמונות, אודיו)
+3. ליצור מבט מאוחד של מידע קשור
+
+למשל, אתם יכולים לבנות מערכת ש:
+- מחפשת מידע במסדי נתונים במודליות מרובות כמו טקסט ותמונה.
+- משלבת תוצאות ממקורות שונים לתגובה קוהרנטית יחידה. למשל, מקובץ אודיו ותיאור טקסט.
+- מציגה את המידע הרלוונטי ביותר ממסד נתונים של מסמכים ומטא-נתונים.
+
+## סיכום
+
+ה-pipelines שהוצגו בפרק הזה הם בעיקר למטרות הדגמה. הם תוכנתו למשימות ספציפיות ולא יכולים לבצע וריאציות שלהן. בפרק הבא תלמדו מה יש בתוך פונקציית `pipeline()` ואיך להתאים אישית את ההתנהגות שלה.
